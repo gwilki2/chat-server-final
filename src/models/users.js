@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       get: function () {
         const avatar = this.getDataValue('avatar')
         const customPath = !avatar ? defaultImage[this.getDataValue('gender')] : `uploads/${avatar}`
-        return `${appConfig.url}:${appConfig.port}/${customPath}`
+        return `${appConfig.url}/${customPath}`
       }
     },
     email: {
