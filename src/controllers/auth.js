@@ -68,7 +68,7 @@ exports.update = async (req, res) => {
 
     let myLogs = ''
     try {
-        myLogs += 'about to call User.update ' + userUpdates + ' ' + req.authedUser.userId + '\n'
+        myLogs += 'about to call User.update ' + JSON.stringify(userUpdates) + ' ' + req.authedUser.userId + '/n'
         const [resultCnt, user] = await User.update(userUpdates, {
             where: { userId: req.authedUser.userId }, 
             returning: true, 
@@ -76,20 +76,20 @@ exports.update = async (req, res) => {
         })
 
         console.log('about to assing userObj')
-        myLogs += 'about to assing userObj' + '\n'
+        myLogs += 'about to assing userObj' + '/n'
 
         const userObj = user[0].toJSON()
 
-        myLogs += 'about to get user with token' + '\n'
+        myLogs += 'about to get user with token' + '/n'
 
         const response = getUserWithToken(userObj)
         
-        myLogs += 'about to call User.update resonse.avatar = ' + response.avatar + ' userUpdates.avatar = ' + userUpdates.avatar + '\n'
+        myLogs += 'about to call User.update resonse.avatar = ' + response.avatar + ' userUpdates.avatar = ' + userUpdates.avatar + '/n'
 
 
         if (userUpdates.avatar) {
 
-            myLogs += 'in if avatar statement' + '\n'
+            myLogs += 'in if avatar statement' + '/n'
 
             //console.log('in user.avatar if :', userObj)
             response.uploadUrl = getFilePutUrl(
@@ -97,7 +97,7 @@ exports.update = async (req, res) => {
                 'image/*'
             )
         }
-        myLogs += 'exited if' + '\n'
+        myLogs += 'exited if' + '/n'
         
         return res.status(200).json(response)
         
