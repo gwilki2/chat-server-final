@@ -66,7 +66,7 @@ exports.update = async (req, res) => {
     if (userUpdates.password === '') delete userUpdates.password
     //console.log('user updates', userUpdates, 'current user data', req.authedUser)
 
-    const myLogs = ''
+    let myLogs = ''
     try {
         myLogs += 'about to call User.update ' + userUpdates + ' ' + req.authedUser.userId + '\n'
         const [resultCnt, user] = await User.update(userUpdates, {
