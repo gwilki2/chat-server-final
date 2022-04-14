@@ -66,29 +66,44 @@ exports.update = async (req, res) => {
     if (userUpdates.password === '') delete userUpdates.password
     //console.log('user updates', userUpdates, 'current user data', req.authedUser)
 
+    const myLogs = ''
     try {
-
+        myLogs += 'about to call User.update ' + userUpdates + ' ' + req.authedUser.userId + '\n'
         const [resultCnt, user] = await User.update(userUpdates, {
             where: { userId: req.authedUser.userId }, 
             returning: true, 
             individualHooks: true
         })
 
+        console.log('about to assing userObj')
+        myLogs += 'about to assing userObj' + '\n'
+
         const userObj = user[0].toJSON()
+
+        myLogs += 'about to get user with token' + '\n'
+
         const response = getUserWithToken(userObj)
         
+        myLogs += 'about to call User.update resonse.avatar = ' + response.avatar + ' userUpdates.avatar = ' + userUpdates.avatar + '\n'
+
+
         if (userUpdates.avatar) {
+
+            myLogs += 'in if avatar statement' + '\n'
+
             //console.log('in user.avatar if :', userObj)
             response.uploadUrl = getFilePutUrl(
                 userObj.avatar,
                 'image/*'
             )
         }
+        myLogs += 'exited if' + '\n'
         
         return res.status(200).json(response)
         
     } catch (e) {
-        return res.status(500).json({error: e.message})
+        console.log(e)
+        return res.status(500).json({error: e.message, myLogs})
     }
 
 }
