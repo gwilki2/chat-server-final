@@ -24,9 +24,9 @@ module.exports = (sequelize, DataTypes) => {
 
   const hashPassword = async (user, options) => {
 
-    console.log('hash user before:', user, 'hash password before:', user.password)
+    //console.log('hash user before:', user, 'hash password before:', user.password)
     if (user.changed('password')) user.password = await bcrypt.hash(user.password, 10)
-    console.log('hash user after:', user, 'hash password after:', user.password)
+    //console.log('hash user after:', user, 'hash password after:', user.password)
   }
 
   users.init({
@@ -49,12 +49,20 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       isIn: [['male', 'female', 'other']]
     },
+    //changing avatar to only send file Path + Name.  client side will determine file server
+    // avatar: {
+    //   type: DataTypes.STRING,
+    //   get: function () {
+    //     const avatar = this.getDataValue('avatar')
+    //     const customPath = !avatar ? defaultImage[this.getDataValue('gender')] : `uploads/${avatar}`
+    //     return `${appConfig.url}/${customPath}`
+    //   }
+    // },
     avatar: {
       type: DataTypes.STRING,
       get: function () {
-        const avatar = this.getDataValue('avatar')
-        const customPath = !avatar ? defaultImage[this.getDataValue('gender')] : `uploads/${avatar}`
-        return `${appConfig.url}/${customPath}`
+        const avatar = `${this.getDataValue('userId')}/${this.getDataValue('avatar')}`
+        return avatar || defaultImage[this.getDataValue('gender')] 
       }
     },
     email: {

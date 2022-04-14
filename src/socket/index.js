@@ -9,7 +9,7 @@ const SocketServer = (server) => {
 
     io.on('connection', (socket) => {
         socket.on('join', async (user) => {
-            console.log("New user joined: ", user.firstName)
+            //console.log("New user joined: ", user.firstName)
         })
 
         socket.on('message', async (message) => {
