@@ -63,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
       get: function () {
         const id = this.getDataValue('userId')
         const avatar = this.getDataValue('avatar')
-        if (!avatar || avatar === 'null' ) return defaultImage[this.getDataValue('gender')] 
+        if (!avatar || avatar.toLowerCase() === 'null' ) return defaultImage[this.getDataValue('gender')] 
         return `${id}/${avatar}`
       }
     },
