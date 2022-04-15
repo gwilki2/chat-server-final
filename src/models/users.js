@@ -43,19 +43,19 @@ module.exports = (sequelize, DataTypes) => {
     },
     lang: {
       type: DataTypes.STRING, 
-      // validate: {
-      //   isIn: [['en', 'fr', 'es']],
+      validate: {
+        isIn: [['en', 'fr', 'es']],
       //   notNull: true,            // won't allow null
       //   notEmpty: true,
-      // }
+      }
     },
     gender: {
       type: DataTypes.STRING,
-      // validate: {
+      validate: {
       //   notNull: true,            // won't allow null
       //   notEmpty: true,
-      //   isIn: [['male', 'female', 'other']]
-      // }
+        isIn: [['male', 'female', 'other']]
+      }
     },
     //changing avatar to only send file Path + Name.  client side will determine file server
     // avatar: {
