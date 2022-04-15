@@ -61,8 +61,10 @@ module.exports = (sequelize, DataTypes) => {
     avatar: {
       type: DataTypes.STRING,
       get: function () {
-        const avatar = `${this.getDataValue('userId')}/${this.getDataValue('avatar')}`
-        return avatar || defaultImage[this.getDataValue('gender')] 
+        const id = this.getDataValue('userId')
+        const avatar = this.getDataValue('avatar')
+        if (!avatar || avatar === 'null' ) return defaultImage[this.getDataValue('gender')] 
+        return `${id}/${avatar}`
       }
     },
     email: {
