@@ -2,8 +2,9 @@ const router = require('express').Router()
 const {login, register, update}  = require('../controllers/auth')
 const upload = require('../middleware/upload')
 const auth = require('../middleware/auth')
+const {validateLogin} = require('../validate')
 
-router.post('/login', login)
+router.post('/login', validateLogin, login)
 
 router.post('/register', register)
 //router.post('/register', upload.single('avatar'), register) //removing multer file upload
