@@ -60,7 +60,8 @@ exports.update = async (req, res) => {
     const userUpdates = req.body
     //console.log(userUpdates)
 
-    if (userUpdates.avatar) userUpdates.avatar=`${v1()}-${userUpdates.avatar}`
+    if (userUpdates.avatar) userUpdates.avatar = `${v1()}-${userUpdates.avatar}`
+    else delete userUpdates.avatar
 
     
     if (userUpdates.password === '') delete userUpdates.password
@@ -68,42 +69,29 @@ exports.update = async (req, res) => {
 
     let myLogs = ''
     try {
-        myLogs += 'about to call User.update ' + JSON.stringify(userUpdates) + ' ' + req.authedUser.userId + '/n'
         const [resultCnt, user] = await User.update(userUpdates, {
             where: { userId: req.authedUser.userId }, 
             returning: true, 
             individualHooks: true
         })
 
-        console.log('about to assing userObj')
-        myLogs += 'about to assing userObj' + '/n'
-
         const userObj = user[0].toJSON()
-
-        myLogs += 'about to get user with token' + '/n'
 
         const response = getUserWithToken(userObj)
         
-        myLogs += 'about to call User.update resonse.avatar = ' + response.avatar + ' userUpdates.avatar = ' + userUpdates.avatar + '/n'
-
-
         if (userUpdates.avatar) {
 
-            myLogs += 'in if avatar statement' + '/n'
-
-            //console.log('in user.avatar if :', userObj)
             response.uploadUrl = getFilePutUrl(
                 userObj.avatar,
                 'image/*'
             )
         }
-        myLogs += 'exited if' + '/n'
-        
+
         return res.status(200).json(response)
         
     } catch (e) {
         console.log(e)
-        return res.status(500).json({error: e.message, myLogs})
+        return res.status(500).json({error: e.message})
     }
 
 }
