@@ -18,6 +18,11 @@ exports.getMessagesWithCount = async (req, res, next) => {
             }
             
         })
+        messages.sort((a, b) => {
+            if (a.createdAt < b.createdAt) return -1
+            if (a.createdAt > b.createdAt) return 1
+            return 0
+        })
 
         return res.status(200).json(messages)
     } catch (e) {
