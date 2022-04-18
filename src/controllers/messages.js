@@ -14,7 +14,7 @@ exports.getMessagesWithCount = async (req, res, next) => {
             ], 
             include: {
                 model: User, 
-                attributes:['userId', 'firstName', 'avatar']  //for some reason I have to include userId here, so the get call for avatar can work properly
+                attributes:['userId', 'gender', 'firstName', 'avatar']  //for some reason I have to include userId here, so the get call for avatar can work properly
             }
             
         })
@@ -35,7 +35,7 @@ exports.getMessagesWithCount = async (req, res, next) => {
 exports.addMessage = async (req, res, next) =>  {
 
     const { lang, message } = req.body
-    const {userId, firstName, avatar} = req.authedUser
+    const {userId, firstName, avatar, gender} = req.authedUser
 
     try {
         const messageResult = await Message.create({
@@ -45,7 +45,7 @@ exports.addMessage = async (req, res, next) =>  {
         })
 
         
-        return res.status(200).json({ ...messageResult.toJSON(), User: {userId, firstName, avatar} })
+        return res.status(200).json({ ...messageResult.toJSON(), User: {userId, firstName, avatar, gender} })
     } catch (e) {
         return res.status(500).json({error:e.message})
     }
